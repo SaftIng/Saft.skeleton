@@ -1,0 +1,23 @@
+{
+    "license": "GPL2",
+    "authors": [
+        {
+            "name": "Natanael Arndt",
+            "homepage": "http://aksw.org/NatanaelArndt",
+            "email": "arndtn@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "tombzombie/dice": "dev-master",
+        "saft/saft": "dev-master",
+        "slim/slim": "~2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Saft\\Skeleton\\": [
+                "."
+            ]
+        }
+    }
+}
