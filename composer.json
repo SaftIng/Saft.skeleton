@@ -13,6 +13,7 @@
         "saft/saft": "dev-master",
         "slim/slim": "~2.0"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Saft\\Skeleton\\": [
