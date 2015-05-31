@@ -27,14 +27,16 @@ class RestApplication
     private $store;
     private $nf;
     private $sf;
-    private $pf;
+    private $parf;
+    private $serf;
 
-    public function __construct(Store $store, NodeFactory $nf, StatementFactory $sf, ParserFactory $pf, SerializerFactory $sf)
+    public function __construct(Store $store, NodeFactory $nf, StatementFactory $sf, ParserFactory $parf, SerializerFactory $serf)
     {
         $this->store = $store;
         $this->nf = $nf;
         $this->sf = $sf;
-        $this->pf = $pf;
+        $this->parf = $parf;
+        $this->serf = $serf;
     }
 
     public function run()
@@ -48,6 +50,8 @@ class RestApplication
                 'subject' => $app->request()->params('s'),
                 'predicate' => $app->request()->params('p'),
                 'object' => $app->request()->params('o'),
+                'bodyType' =>  $app->request->headers->get('Content-Type'),
+                'body' => $app->request()->getBody(),
             ];
 
             // set default action
@@ -88,85 +92,90 @@ class RestApplication
              */
             // ob_clean();
 
-            echo $this->resultEncode($return);
+            echo $this->serializeResult($return, $app);
         })->via('GET', 'POST', 'PUT');
         $app->run();
     }
 
-    public function resultEncode($result)
+    protected function serializeResult($result, $app)
     {
-        if ($result instanceof Saft\Store\Result\StatementSetResult || $result instanceof Saft\Rdf\StatementIterator) {
-            $serializer = $this->sf->createSerializerFactoryFor('ntriples');
-            return $serializer->serializeToString($result, 'ntriples');
+        $acceptHeader = $app->request->headers->get('Accept');
+        if ($result instanceof \Saft\Rdf\StatementIterator) {
+            //$acceptType;
+            // TODO set correct mime type
+            $serializer = $this->serf->createSerializerFor('ntriples');
+            $app->response->headers->set('Content-Type', 'application/n-triple');
+            //$app->response->headers->set('Content-Type', 'application/n-quads');
+            $serializer->serializeIteratorToStream($result, 'php://output', 'ntriples');
+            return;
+        } elseif ($result instanceof \Saft\Sparql\Result) {
+            // TODO transform result to correct JSON result or whatever has to be returned
+            return var_export($result, true);
         }
         return json_encode($result);
+
+        // maybe we should return a general success message if no Exception was thrown
+        // How to handle Exceptions?
     }
 
     public function getAction($subject, $predicate, $object, $graph = null)
     {
-        $s = $this->nf->createAnyPattern();
-        $p = $this->nf->createAnyPattern();
-        $o = $this->nf->createAnyPattern();
+        // TODO evaluate accept header to decide which serialization to use
         $graphNode = null;
-
-        if ($subject != null) {
-            $s = $this->nf->createNamedNode($subject);
-        }
-        if ($predicate != null) {
-            $p = $this->nf->createNamedNode($predicate);
-        }
-        if ($object != null) {
-            $o = $this->nf->createNamedNode($object);
-        }
         if ($graph != null) {
             $graphNode = $this->nf->createNamedNode($graph);
         }
 
-        $pattern = $this->sf->createStatement($s, $p, $o);
+        $pattern = $this->createStatement($subject, $predicate, $object);
+
         return $this->store->getMatchingStatements($pattern, $graphNode);
     }
 
     public function hasAction($subject, $predicate, $object, $graph = null)
     {
-        $any = $this->nf->createAnyPattern();
-        $s = $this->nf->createNamedNode($subject);
-        $p = $this->nf->createNamedNode($predicate);
-        $o = $this->nf->createNamedNode($object);
-        $graphNode = $this->nf->createNamedNode($graph);
-
-        $pattern = $this->sf->createStatement($s, $p, $o);
-        return $this->store-hassMatchingStatements($pattern, $graphNode);
+        $graphNode = null;
+        if ($graph != null) {
+            $graphNode = $this->nf->createNamedNode($graph);
+        }
+        $pattern = $this->createStatement($subject, $predicate, $object);
+        return $this->store->hasMatchingStatements($pattern, $graphNode);
     }
 
-    public function addAction($payload, $mimetype, $graph = null)
+    public function addAction($body, $bodyType = 'text/turtle', $graph = null)
     {
+        $graphNode = null;
+        if ($graph != null) {
+            $graphNode = $this->nf->createNamedNode($graph);
+        }
         $mimeToSerialization = [
             'text/turtle' => 'turtle',
             'application/rdf+xml' => 'rdfxml',
         ];
-        $serialization = $mimeToSerialization[$mimetype];
-        $parser = $this->pf->createParserFor($serialization);
-        $statements = $parser->parse($payload, $serialization);
-        $this->store->addStatements($statements);
+        $serialization = 'turtle';
+        if (isset($mimeToSerialization[$bodyType])) {
+            $serialization = $mimeToSerialization[$bodyType];
+        }
+        $parser = $this->parf->createParserFor($serialization);
+        $statements = $parser->parseStringToIterator($body, null, $serialization);
+        $this->store->addStatements($statements, $graphNode);
     }
 
     public function deleteAction($subject, $predicate, $object, $graph = null)
     {
-        $any = $this->nf->createAnyPattern();
-        $s = $this->nf->createNamedNode($subject);
-        $p = $this->nf->createNamedNode($predicate);
-        $o = $this->nf->createNamedNode($object);
-        $graphNode = $this->nf->createNamedNode($graph);
-
-        $pattern = $this->sf->createStatement($s, $p, $o);
+        $graphNode = null;
+        if ($graph != null) {
+            $graphNode = $this->nf->createNamedNode($graph);
+        }
+        $pattern = $this->createStatement($subject, $predicate, $object);
         $this->store->deleteMatchingStatements($pattern, $graphNode);
     }
 
     public function queryAction($query, $graph = null)
     {
-        echo $query;
-        return;
-        $graphNode = $this->nf->createNamedNode($graph);
+        $graphNode = null;
+        if ($graph != null) {
+            $graphNode = $this->nf->createNamedNode($graph);
+        }
         return $this->store->query($query, $graphNode);
     }
 
@@ -190,5 +199,24 @@ class RestApplication
     {
         $graphNode = $this->nf->createNamedNode($graph);
         $this->store->dropGraph($graphNode);
+    }
+
+    protected function createStatement($subject, $predicate, $object)
+    {
+        $s = $this->nf->createAnyPattern();
+        $p = $this->nf->createAnyPattern();
+        $o = $this->nf->createAnyPattern();
+
+        if ($subject != null) {
+            $s = $this->nf->createNodeFromNQuads($subject);
+        }
+        if ($predicate != null) {
+            $p = $this->nf->createNodeFromNQuads($predicate);
+        }
+        if ($object != null) {
+            $o = $this->nf->createNodeFromNQuads($object);
+        }
+
+        return $this->sf->createStatement($s, $p, $o);
     }
 }
