@@ -1,12 +1,12 @@
 <?php
 
-namespace Saft\Skeleton\DependencyInjection\Dice;
+namespace Saft\Skeleton\DependencyInjection;
 
 use Dice\Dice;
 use Dice\Instance;
 use Dice\Rule;
 
-class Container
+class ContainerDice implements Container
 {
     /**
      * @var Dice
@@ -49,6 +49,8 @@ class Container
     }
 
     /**
+     * Creates and returns an instance of a given class name.
+     *
      * @param  string $classToInstantiate Name of the class you want to instantiate.
      * @param  array  $parameter          Array which contains all parameter for the class to instantiate.
      *                                    (optional)

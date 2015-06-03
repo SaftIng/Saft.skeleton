@@ -1,12 +1,12 @@
 <?php
 
-namespace Saft\Skeleton\Test\DependencyInjection\Dice;
+namespace Saft\Skeleton\Test\DependencyInjection;
 
 use Saft\Rdf\LiteralImpl;
-use Saft\Skeleton\DependencyInjection\Dice\Container;
+use Saft\Skeleton\DependencyInjection\ContainerDice;
 use Saft\Skeleton\Test\TestCase;
 
-class ContainerTest extends TestCase
+class ContainerDiceTest extends TestCase
 {
     /*
      * Tests for createInstanceOf
@@ -14,7 +14,7 @@ class ContainerTest extends TestCase
 
     public function testCreateInstanceOfBasic()
     {
-        $fixture = new Container();
+        $fixture = new ContainerDice();
         $this->assertEquals(
             new LiteralImpl('foo'),
             $fixture->createInstanceOf('Saft\Rdf\LiteralImpl', array('foo'))
@@ -27,7 +27,7 @@ class ContainerTest extends TestCase
             $this->markTestSkipped('Array virtuosoConfig is not set in the test-config.yml.');
         }
 
-        $fixture = new Container();
+        $fixture = new ContainerDice();
 
         $virtuoso = $fixture->createInstanceOf(
             'Saft\Backend\Virtuoso\Store\Virtuoso',
