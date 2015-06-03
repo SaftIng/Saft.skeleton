@@ -6,10 +6,16 @@
             "homepage": "http://aksw.org/NatanaelArndt",
             "email": "arndtn@gmail.com",
             "role": "Developer"
+        },
+        {
+            "name": "Konrad Abicht",
+            "homepage": "http://inspirito.de",
+            "email": "hi@inspirito.de",
+            "role": "Developer"
         }
     ],
     "require": {
-        "tombzombie/dice": "dev-master",
+        "tombzombie/dice": "dev-PHP5.3",
         "saft/saft": "dev-master",
         "slim/slim": "~2.0"
     },
