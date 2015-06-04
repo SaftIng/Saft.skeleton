@@ -30,7 +30,7 @@ class ContainerDiceTest extends TestCase
         $fixture = new ContainerDice();
 
         $virtuoso = $fixture->createInstanceOf(
-            'Saft\Backend\Virtuoso\Store\Virtuoso',
+            'Saft\Addition\Virtuoso\Store\Virtuoso',
             array($this->config['virtuosoConfig'])
         );
 
