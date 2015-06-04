@@ -1,5 +1,7 @@
 {
-    "license": "GPL2",
+    "name": "saft/saft-skeleton",
+    "description": "This collection of classes helps you to accelerate while developing Semantic Web applications using the Saft framework.",
+    "license": "GPL-3.0",
     "authors": [
         {
             "name": "Natanael Arndt",
