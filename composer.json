@@ -1,6 +1,7 @@
 {
     "name": "saft/saft-skeleton",
     "description": "This collection of classes helps you to accelerate while developing Semantic Web applications using the Saft framework.",
+    "version": "0.1.0-alpha1",
     "license": "GPL-3.0",
     "authors": [
         {
