@@ -20,7 +20,8 @@
     "require": {
         "tombzombie/dice": "dev-PHP5.3",
         "saft/saft": "dev-master",
-        "slim/slim": "~2.0"
+        "slim/slim": "~2.0",
+        "zendframework/zend-diactoros": "*"
     },
     "minimum-stability": "dev",
     "autoload": {
