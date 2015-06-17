@@ -9,7 +9,7 @@ use Saft\Rdf\StatementIteratorFactoryImpl;
 use Saft\Skeleton\Rest\Hub;
 use Saft\Skeleton\Test\TestCase;
 use Saft\Sparql\Query\QueryFactoryImpl;
-use Saft\Store\Test\BasicTriplePatternStore;
+use Saft\Store\BasicTriplePatternStore;
 use Zend\Diactoros\ServerRequest;
 
 class HubTest extends TestCase
