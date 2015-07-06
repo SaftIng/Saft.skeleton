@@ -1,6 +1,6 @@
 <?php
 
-namespace Saft\Skeleton;
+namespace Saft\Skeleton\Rest;
 
 use Saft\Data\ParserFactory;
 use Saft\Data\SerializerFactory;
@@ -22,7 +22,7 @@ use Slim\Slim;
  * ?action=:action
  * ?s=:s&p=:p&o=:o&graph=:g : Store->getMatchingStatements($s, $p, $o, $g, $options[…]);
  */
-class RestApplication
+class Application
 {
     private $store;
     private $nf;
