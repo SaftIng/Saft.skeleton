@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "level-2/dice": "*",
+        "level-2/dice": "dev-PHP5.3",
         "saft/saft": "*",
         "slim/slim": "~2.0",
         "zendframework/zend-diactoros": "*"
