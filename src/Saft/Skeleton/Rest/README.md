@@ -1,6 +1,6 @@
 # REST API
 
-It implements the REST interface described [here](http://safting.github.io/doc/restinterface/triplestore/) and  its purpose is to provide a basic middleware, which gets a request object, handles the query and serves a response object in the end. In that way you will be able to integrate it smoothly into different environments. 
+It implements the REST interface described [here](http://safting.github.io/doc/restinterface/triplestore/) and  its purpose is to provide a basic middleware, which gets a request object, handles the query and serves a response object in the end. In that way you will be able to integrate it smoothly into different environments.
 
 The REST API is based on [PSR-7](http://www.php-fig.org/psr/psr-7/) and it is using Zends Diactoros implementation internally: https://github.com/zendframework/zend-diactoros
 
@@ -10,7 +10,7 @@ The REST API is based on [PSR-7](http://www.php-fig.org/psr/psr-7/) and it is us
 PSR-7 request
   |
   v
- Hub <--> store ( and temp file)
+ Hub <--> store (and temp file)
   |
   v
 PSR-7 response
@@ -22,7 +22,7 @@ The *PSR-7 request* must be an object and represents a client request. Because i
 
 #### Hub
 
-The Hub is the heart of the API. It will get the request and serves the response in the end. After the request was validated it transforms the given parameters (s, p, o, ...) into a Statement and stuff, to query the store. The answer of the store will be serialized and put into a temporary file. 
+The Hub is the heart of the API. It will get the request and serves the response in the end. After the request was validated it transforms the given parameters (s, p, o, ...) into a Statement and stuff, to query the store. The answer of the store will be serialized and put into a temporary file.
 
 Example code:
 
@@ -35,7 +35,7 @@ use Saft\Store\BasicTriplePatternStore;
 
 // ...
 
-// init a basic store (it stores its data in the memory 
+// init a basic store (it stores its data in the memory
 // and provides a basic interface for test usage)
 $store = new BasicTriplePatternStore(
     new NodeFactoryImpl(),
@@ -45,11 +45,12 @@ $store = new BasicTriplePatternStore(
 );
 
 // init Hub (REST api)
-$fixture = new Hub(
+$restHub = new Hub(
     $store,
     new StatementFactoryImpl(),
     new NodeFactoryImpl(),
-    new NQuadsSerializerImpl()
+    new NQuadsSerializerImpl('n-triples'),
+    new NodeUtils()
 );
 
 // create PSR-7 request
@@ -71,9 +72,9 @@ $request = new ServerRequest(
 );
 
 // compute request and store received PSR-7 response
-$response = $fixture->computeRequest($request);
+$response = $restHub->computeRequest($request);
 
-// $response->getBody()->getContents() provides access to the body of the response 
+// $response->getBody()->getContents() will provide access to the body of the response
 // and may contain something like:
 // <http://localhost/Saft/TestGraph/> <http://localhost/Saft/TestGraph/> <http://localhost/Saft/TestGraph/> .
 ```

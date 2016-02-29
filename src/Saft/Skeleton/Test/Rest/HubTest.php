@@ -4,6 +4,7 @@ namespace Saft\Skeleton\Rest\Test;
 
 use Saft\Data\NQuadsSerializerImpl;
 use Saft\Rdf\NodeFactoryImpl;
+use Saft\Rdf\NodeUtils;
 use Saft\Rdf\StatementFactoryImpl;
 use Saft\Rdf\StatementIteratorFactoryImpl;
 use Saft\Skeleton\Rest\Hub;
@@ -38,7 +39,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
 
         // s, p and o must be set, otherwise we would get an error concerning missing s or p or o
@@ -75,7 +77,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
 
         // s, p and o must be set, otherwise we would get an error concerning missing s or p or o
@@ -107,7 +110,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
 
         // s, p and o must be set, otherwise we would get an error concerning missing s or p or o
@@ -146,7 +150,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
 
         // s, p and o must be set, otherwise we would get an error concerning missing s or p or o
@@ -168,7 +173,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
 
         // s, p and o must be set, otherwise we would get an error concerning missing s or p or o
@@ -190,7 +196,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
 
         // s, p and o must be set, otherwise we would get an error concerning missing s or p or o
@@ -224,7 +231,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -247,7 +255,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -266,7 +275,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -289,7 +299,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -312,7 +323,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -335,7 +347,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -358,7 +371,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -381,7 +395,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -405,7 +420,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -429,7 +445,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -452,7 +469,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -475,7 +493,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -497,7 +516,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -517,7 +537,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -535,7 +556,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
 
         // s, p and o must be set, otherwise we would get an error concerning missing s or p or o
@@ -557,7 +579,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
 
         // s, p and o must be set, otherwise we would get an error concerning missing s or p or o
@@ -588,7 +611,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -618,7 +642,8 @@ class HubTest extends TestCase
             $this->getMockStore(),
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-quads'),
+            new NodeUtils()
         );
         $response = $fixture->computeRequest($request);
 
@@ -651,7 +676,8 @@ class HubTest extends TestCase
             $mockStore,
             new StatementFactoryImpl(),
             new NodeFactoryImpl(),
-            new NQuadsSerializerImpl()
+            new NQuadsSerializerImpl('n-triples'),
+            new NodeUtils()
         );
 
         // s, p and o must be set, otherwise we would get an error concerning missing s or p or o
