@@ -152,7 +152,10 @@ class RequestHandler
 
             // mongodb storage
             case 'mongodb':
-                $this->storage = new MongoDBStorage();
+                $this->storage = new MongoDBStorage(
+                    $configuration['host'],
+                    $configuration['port']
+                );
                 break;
 
             // sqlite storage
