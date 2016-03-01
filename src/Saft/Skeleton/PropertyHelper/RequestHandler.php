@@ -6,6 +6,7 @@ use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Caching\Storages\NewMemcachedStorage;
 use Nette\Caching\Storages\MemoryStorage;
+use Nette\Caching\Storages\MongoDBStorage;
 use Nette\Caching\Storages\SQLiteStorage;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\NamedNodeImpl;
@@ -53,7 +54,7 @@ class RequestHandler
     public function getAvailableCacheBackends()
     {
         return array(
-            'file', 'memcached', 'memory', 'sqlite'
+            'file', 'memcached', 'memory', 'mongodb', 'sqlite'
         );
     }
 
@@ -147,6 +148,11 @@ class RequestHandler
             // memory storage: lasts as long as the current PHP session is executed.
             case 'memory':
                 $this->storage = new MemoryStorage();
+                break;
+
+            // mongodb storage
+            case 'mongodb':
+                $this->storage = new MongoDBStorage();
                 break;
 
             // sqlite storage

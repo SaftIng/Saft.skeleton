@@ -72,7 +72,7 @@ class RequestHandlerTest extends TestCase
     public function testGetAvailableCacheBackends()
     {
         $this->assertEquals(
-            array('file', 'memcached', 'memory', 'sqlite'),
+            array('file', 'memcached', 'memory', 'mongodb', 'sqlite'),
             $this->fixture->getAvailableCacheBackends()
         );
     }
