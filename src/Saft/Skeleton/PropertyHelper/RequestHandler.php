@@ -7,6 +7,7 @@ use Nette\Caching\Storages\FileStorage;
 use Nette\Caching\Storages\NewMemcachedStorage;
 use Nette\Caching\Storages\MemoryStorage;
 use Nette\Caching\Storages\MongoDBStorage;
+use Nette\Caching\Storages\RedisStorage;
 use Nette\Caching\Storages\SQLiteStorage;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\NamedNodeImpl;
@@ -54,7 +55,7 @@ class RequestHandler
     public function getAvailableCacheBackends()
     {
         return array(
-            'file', 'memcached', 'memory', 'mongodb', 'sqlite'
+            'file', 'memcached', 'memory', 'mongodb', 'redis', 'sqlite'
         );
     }
 
@@ -153,6 +154,14 @@ class RequestHandler
             // mongodb storage
             case 'mongodb':
                 $this->storage = new MongoDBStorage(
+                    $configuration['host'],
+                    $configuration['port']
+                );
+                break;
+
+            // redis storage
+            case 'redis':
+                $this->storage = new RedisStorage(
                     $configuration['host'],
                     $configuration['port']
                 );
