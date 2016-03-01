@@ -3,6 +3,7 @@
 namespace Saft\Skeleton\PropertyHelper;
 
 use Nette\Caching\Cache;
+use Nette\Caching\Storages\FileStorage;
 use Nette\Caching\Storages\MemoryStorage;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\NamedNodeImpl;

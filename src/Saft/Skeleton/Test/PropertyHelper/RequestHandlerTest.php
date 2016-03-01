@@ -215,7 +215,12 @@ class RequestHandlerTest extends TestCase
      * Tests for setupCache
      */
 
-    public function testSetupCacheParameter()
+    public function testSetupCacheNameFile()
+    {
+        $this->assertNull($this->fixture->setupCache(array('name' => 'file', 'dir' => sys_get_temp_dir())));
+    }
+
+    public function testSetupCacheNameMemory()
     {
         $this->assertNull($this->fixture->setupCache(array('name' => 'memory')));
     }
