@@ -15,3 +15,7 @@ Using RequestHandler makes it easy to deploy a PropertyHelper installation, beca
 ## How to use
 
 Please have a look into prepared [examples](https://github.com/SaftIng/Saft.example/tree/master/PropertyHelper).
+
+## Credits
+
+Based on the work of [Simeon Ackermann](imeonackermann).
