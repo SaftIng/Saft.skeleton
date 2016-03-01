@@ -4,7 +4,7 @@ namespace Saft\Skeleton\PropertyHelper;
 
 use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
-use Nette\Caching\Storages\MemcachedStorage;
+use Nette\Caching\Storages\NewMemcachedStorage;
 use Nette\Caching\Storages\MemoryStorage;
 use Nette\Caching\Storages\SQLiteStorage;
 use Saft\Rdf\NamedNode;
@@ -138,7 +138,10 @@ class RequestHandler
 
             // memcached storage
             case 'memcached':
-                $this->storage = new MemcachedStorage($configuration['host'], $configuration['port']);
+                $this->storage = new NewMemcachedStorage(
+                    $configuration['host'],
+                    $configuration['port']
+                );
                 break;
 
             // memory storage: lasts as long as the current PHP session is executed.
