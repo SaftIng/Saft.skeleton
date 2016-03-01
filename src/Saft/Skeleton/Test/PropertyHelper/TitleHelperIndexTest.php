@@ -2,6 +2,13 @@
 
 namespace Saft\Skeleton\Test\PropertyHelper;
 
+use Saft\Skeleton\PropertyHelper\TitleHelperIndex;
+
 class TitleHelperIndexTest extends AbstractIndexTest
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->fixture = new TitleHelperIndex($this->cache, $this->store, $this->testGraph);
+    }
 }

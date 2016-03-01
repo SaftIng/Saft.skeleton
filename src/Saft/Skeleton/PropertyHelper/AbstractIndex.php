@@ -39,19 +39,10 @@ abstract class AbstractIndex
      * @param Cache $cache
      * @param Store $store
      * @param NamedNode $graph
-     * @param array $preferedProperties
      * @throws \Exception if preferedProperties contains 0 elements.
      */
-    public function __construct(Cache $cache, Store $store, NamedNode $graph, array $preferedProperties = array())
+    public function __construct(Cache $cache, Store $store, NamedNode $graph)
     {
-        $this->preferedProperties = $preferedProperties;
-
-        if (0 == count($this->preferedProperties)) {
-            throw new \Exception(
-                'Property preferedProperties is empty. It must at least contain one URI.'
-           );
-        }
-
         $this->cache = $cache;
         $this->graph = $graph;
         $this->store = $store;
@@ -121,6 +112,8 @@ abstract class AbstractIndex
             });
             $this->cache->save($this->graph->getUri() . '.' . $s, $title);
         }
+
+        return $titles;
     }
 
     /**
@@ -137,8 +130,10 @@ abstract class AbstractIndex
             $titleDefLang = null;
             $title = null;
 
+            // if there are title information for a given URI
             if (null != $titleObjs) {
                 foreach ($titleObjs['titles'] as $key => $titleObj) {
+                    // language is set for the title
                     if (isset($titleObj['lang'])) {
                         if ($titleObj['lang'] == $lang) {
                             $title = $titleObj['title'];
@@ -151,6 +146,7 @@ abstract class AbstractIndex
                         }
                     }
                 }
+                // if a title was found
                 if (empty($title)) {
                     if (false === empty($titleDefLang)) {
                         $title = $titleDefLang;
