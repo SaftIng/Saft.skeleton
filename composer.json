@@ -19,6 +19,7 @@
     "require": {
         "level-2/dice": "2.0.*",
         "nette/caching": "2.4.*",
+        "ruflin/elastica": "3.*",
         "saft/saft": "dev-master",
         "slim/slim": "3.2.*",
         "zendframework/zend-diactoros": "1.3.*"
