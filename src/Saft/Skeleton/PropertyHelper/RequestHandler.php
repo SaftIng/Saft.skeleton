@@ -6,6 +6,7 @@ use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Caching\Storages\MemcachedStorage;
 use Nette\Caching\Storages\MemoryStorage;
+use Nette\Caching\Storages\SQLiteStorage;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\NamedNodeImpl;
 use Saft\Store\Store;
@@ -52,7 +53,7 @@ class RequestHandler
     public function getAvailableCacheBackends()
     {
         return array(
-            'file', 'memcached', 'memory'
+            'file', 'memcached', 'memory', 'sqlite'
         );
     }
 
@@ -113,6 +114,9 @@ class RequestHandler
      *
      * - memory - No additional configuration needed.
      *
+     * - sqlite
+     *   - path - Full path to the sqlite file.
+     *
      * @param array $configuration
      * @throws \Exception if parameter $configuration is empty
      * @throws \Exception if parameter $configuration does not have key "name" set
@@ -140,6 +144,11 @@ class RequestHandler
             // memory storage: lasts as long as the current PHP session is executed.
             case 'memory':
                 $this->storage = new MemoryStorage();
+                break;
+
+            // sqlite storage
+            case 'sqlite':
+                $this->storage = new SQLiteStorage($configuration['path']);
                 break;
 
             default:
