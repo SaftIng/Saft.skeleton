@@ -165,10 +165,10 @@ abstract class AbstractIndexTest extends TestCase
     }
 
     /*
-     * Tests fetchTitles
+     * Tests fetchValues
      */
 
-    public function testFetchTitles()
+    public function testFetchValues()
     {
         $this->fillStoreWithTestData();
 
@@ -180,7 +180,7 @@ abstract class AbstractIndexTest extends TestCase
             array(
                 'http://saft/test/s1' => 's1 dcterms title'
             ),
-            $this->fixture->fetchTitles(
+            $this->fixture->fetchValues(
                 array(
                     'http://saft/test/s1'
                 )
@@ -188,7 +188,7 @@ abstract class AbstractIndexTest extends TestCase
         );
     }
 
-    public function testFetchTitlesNotAvailableUri()
+    public function testFetchValuesNotAvailableUri()
     {
         $this->fillStoreWithTestData();
 
@@ -200,7 +200,7 @@ abstract class AbstractIndexTest extends TestCase
             array(
                 'http://not_available' => ''
             ),
-            $this->fixture->fetchTitles(
+            $this->fixture->fetchValues(
                 array(
                     'http://not_available'
                 )
@@ -208,7 +208,7 @@ abstract class AbstractIndexTest extends TestCase
         );
     }
 
-    public function testFetchTitlesEmptyUriList()
+    public function testFetchValuesEmptyUriList()
     {
         $this->fillStoreWithTestData();
 
@@ -218,7 +218,7 @@ abstract class AbstractIndexTest extends TestCase
         // test created cache entries
         $this->assertEquals(
             array(),
-            $this->fixture->fetchTitles(
+            $this->fixture->fetchValues(
                 array()
             )
         );

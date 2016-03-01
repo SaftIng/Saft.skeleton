@@ -90,8 +90,8 @@ class RequestHandler
         if ('createindex' == $action) {
             return $this->index->createIndex();
 
-        } elseif('fetchtitles' == $action) {
-            return $this->index->fetchTitles($payload);
+        } elseif('fetchvalues' == $action) {
+            return $this->index->fetchValues($payload);
         }
 
         throw new \Exception('Unknown $action given: '. $action);

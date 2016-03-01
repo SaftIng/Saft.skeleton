@@ -143,7 +143,7 @@ class RequestHandlerTest extends TestCase
         $this->assertNull($this->fixture->handle('createIndex'));
     }
 
-    public function testHandleActionFetchTitles()
+    public function testHandleActionFetchValues()
     {
         $this->fillStoreWithTestData();
 
@@ -157,11 +157,11 @@ class RequestHandlerTest extends TestCase
 
         $this->assertEquals(
             array('http://saft/test/s2' => 's2 rdfs label'),
-            $this->fixture->handle('fetchTitles', array('http://saft/test/s2'))
+            $this->fixture->handle('fetchValues', array('http://saft/test/s2'))
         );
     }
 
-    public function testHandleActionFetchTitlesEmptyPayload()
+    public function testHandleActionFetchValuesEmptyPayload()
     {
         $this->fillStoreWithTestData();
 
@@ -175,7 +175,7 @@ class RequestHandlerTest extends TestCase
 
         $this->assertEquals(
             array(),
-            $this->fixture->handle('fetchTitles')
+            $this->fixture->handle('fetchValues')
         );
     }
 

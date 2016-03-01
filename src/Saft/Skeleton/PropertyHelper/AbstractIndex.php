@@ -117,9 +117,9 @@ abstract class AbstractIndex
     }
 
     /**
-     * @param array $uriList List of URIs you want titles for
+     * @param array $uriList List of URIs you want property values for
      */
-    public function fetchTitles(array $uriList)
+    public function fetchValues(array $uriList)
     {
         $titles = array();
 
