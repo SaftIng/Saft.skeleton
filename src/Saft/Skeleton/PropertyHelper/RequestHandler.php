@@ -4,6 +4,7 @@ namespace Saft\Skeleton\PropertyHelper;
 
 use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
+use Nette\Caching\Storages\MemcachedStorage;
 use Nette\Caching\Storages\MemoryStorage;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\NamedNodeImpl;
@@ -51,7 +52,7 @@ class RequestHandler
     public function getAvailableCacheBackends()
     {
         return array(
-            'file', 'memory'
+            'file', 'memcached', 'memory'
         );
     }
 
@@ -106,6 +107,10 @@ class RequestHandler
      * - file
      *   - dir - Path to the store where the data to be stored.
      *
+     * - memcached
+     *   - host - Host of the memcached server.
+     *   - port - Port of the memcached server.
+     *
      * - memory - No additional configuration needed.
      *
      * @param array $configuration
@@ -125,6 +130,11 @@ class RequestHandler
             // file storage: stores data in files
             case 'file':
                 $this->storage = new FileStorage($configuration['dir']);
+                break;
+
+            // memcached storage
+            case 'memcached':
+                $this->storage = new MemcachedStorage($configuration['host'], $configuration['port']);
                 break;
 
             // memory storage: lasts as long as the current PHP session is executed.
