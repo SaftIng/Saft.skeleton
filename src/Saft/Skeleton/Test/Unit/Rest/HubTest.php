@@ -1,6 +1,6 @@
 <?php
 
-namespace Saft\Skeleton\Rest\Test;
+namespace Saft\Skeleton\Test\Unit\Rest;
 
 use Saft\Data\NQuadsSerializerImpl;
 use Saft\Rdf\NodeFactoryImpl;

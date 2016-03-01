@@ -1,6 +1,6 @@
 <?php
 
-namespace Saft\Skeleton\Test\PropertyHelper;
+namespace Saft\Skeleton\Test\Unit\PropertyHelper;
 
 use Nette\Caching\Cache;
 use Nette\Caching\Storages\MemoryStorage;

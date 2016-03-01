@@ -1,6 +1,6 @@
 <?php
 
-namespace Saft\Skeleton\Test\DependencyInjection;
+namespace Saft\Skeleton\Test\Unit\DependencyInjection;
 
 use Saft\Rdf\AnyPatternImpl;
 use Saft\Rdf\BlankNodeImpl;

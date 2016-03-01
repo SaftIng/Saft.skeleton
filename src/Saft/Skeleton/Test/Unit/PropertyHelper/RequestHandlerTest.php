@@ -1,9 +1,8 @@
 <?php
 
-namespace Saft\Skeleton\Test\PropertyHelper;
+namespace Saft\Skeleton\Test\Unit\PropertyHelper;
 
 use Nette\Caching\Cache;
-use Nette\Caching\Storages\MemoryStorage;
 use Saft\Rdf\LiteralImpl;
 use Saft\Rdf\NamedNodeImpl;
 use Saft\Rdf\NodeFactoryImpl;
@@ -24,10 +23,6 @@ class RequestHandlerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-
-        // cache environment
-        $this->storage = new MemoryStorage();
-        $this->cache = new Cache($this->storage);
 
         // store
         $this->store = new BasicTriplePatternStore(
@@ -77,7 +72,7 @@ class RequestHandlerTest extends TestCase
     public function testGetAvailableCacheBackends()
     {
         $this->assertEquals(
-            array('file', 'memory'),
+            array('file', 'memcached', 'memory'),
             $this->fixture->getAvailableCacheBackends()
         );
     }
@@ -98,33 +93,6 @@ class RequestHandlerTest extends TestCase
      * Tests for handle
      */
 
-    public function testHandleActionCreateIndex()
-    {
-        $this->fillStoreWithTestData();
-
-        // setup cache using memory
-        $this->fixture->setupCache(array('name' => 'memory'));
-
-        // set titlehelper
-        $this->fixture->setType('title');
-
-        $this->assertEquals(
-            array(
-                'http://saft/test/s1' => array(
-                    'titles' => array(array('uri' => 'http://purl.org/dc/terms/title', 'title' => 's1 dcterms title'))
-                ),
-                'http://saft/test/s2' => array(
-                    'titles' => array(
-                        array('uri' => 'http://www.w3.org/2000/01/rdf-schema#label', 'title' => 's2 rdfs label'),
-                        array('uri' => 'http://purl.org/dc/terms/title', 'title' => 's2 dcterms title'),
-                        array('uri' => 'http://purl.org/dc/terms/title', 'title' => 's2 dcterms title - 2'),
-                    )
-                )
-            ),
-            $this->fixture->handle('createIndex')
-        );
-    }
-
     public function testHandleActionCreateIndexEmptyStore()
     {
         // setup cache using memory
@@ -141,24 +109,6 @@ class RequestHandlerTest extends TestCase
         $this->setExpectedException('Exception');
 
         $this->assertNull($this->fixture->handle('createIndex'));
-    }
-
-    public function testHandleActionFetchValues()
-    {
-        $this->fillStoreWithTestData();
-
-        // setup cache using memory
-        $this->fixture->setupCache(array('name' => 'memory'));
-
-        // set titlehelper
-        $this->fixture->setType('title');
-
-        $this->assertTrue(0 < count($this->fixture->handle('createIndex')));
-
-        $this->assertEquals(
-            array('http://saft/test/s2' => 's2 rdfs label'),
-            $this->fixture->handle('fetchValues', array('http://saft/test/s2'))
-        );
     }
 
     public function testHandleActionFetchValuesEmptyPayload()
@@ -190,13 +140,6 @@ class RequestHandlerTest extends TestCase
      * Tests for setType
      */
 
-    public function testSetType()
-    {
-        $this->fixture->setupCache(array('name' => 'memory'));
-
-        $this->assertNull($this->fixture->setType('title'));
-    }
-
     public function testSetTypeSetupCacheNotCalledBefore()
     {
         $this->setExpectedException('Exception');
@@ -214,16 +157,6 @@ class RequestHandlerTest extends TestCase
     /*
      * Tests for setupCache
      */
-
-    public function testSetupCacheNameFile()
-    {
-        $this->assertNull($this->fixture->setupCache(array('name' => 'file', 'dir' => sys_get_temp_dir())));
-    }
-
-    public function testSetupCacheNameMemory()
-    {
-        $this->assertNull($this->fixture->setupCache(array('name' => 'memory')));
-    }
 
     public function testSetupCacheParameterConfigurationIsEmpty()
     {
