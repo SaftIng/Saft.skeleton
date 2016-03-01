@@ -47,6 +47,16 @@ class RequestHandler
     /**
      * @return array Array of string containing available property types.
      */
+    public function getAvailableCacheBackends()
+    {
+        return array(
+            'file', 'memory'
+        );
+    }
+
+    /**
+     * @return array Array of string containing available property types.
+     */
     public function getAvailableTypes()
     {
         return array(
@@ -90,6 +100,13 @@ class RequestHandler
     /**
      * Initializes the cache backend and storage.
      *
+     * Configuration information (besides name) for each backend:
+     *
+     * - file
+     *   - dir - Path to the store where the data to be stored.
+     *
+     * - memory - No additional configuration needed.
+     *
      * @param array $configuration
      * @throws \Exception if parameter $configuration is empty
      * @throws \Exception if parameter $configuration does not have key "name" set
@@ -104,6 +121,11 @@ class RequestHandler
         }
 
         switch($configuration['name']) {
+            // file storage: stores data in files
+            case 'file':
+                $this->storage = new FileStorage($configuration['dir']);
+                break;
+
             // memory storage: lasts as long as the current PHP session is executed.
             case 'memory':
                 $this->storage = new MemoryStorage();

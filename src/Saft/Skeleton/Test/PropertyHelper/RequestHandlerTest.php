@@ -71,6 +71,18 @@ class RequestHandlerTest extends TestCase
     }
 
     /*
+     * Tests for getAvailableCacheBackends
+     */
+
+    public function testGetAvailableCacheBackends()
+    {
+        $this->assertEquals(
+            array('file', 'memory'),
+            $this->fixture->getAvailableCacheBackends()
+        );
+    }
+
+    /*
      * Tests for getAvailableTypes
      */
 
