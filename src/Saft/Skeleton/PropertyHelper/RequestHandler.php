@@ -80,8 +80,9 @@ class RequestHandler
     /**
      * @param string $action
      * @param array $payload Neccessary configuration to execute the requested action.
+     * @param string $preferedLanguage Prefered language for the fetched titles
      */
-    public function handle($action, $payload = array())
+    public function handle($action, $payload = array(), $preferedLanguage = "")
     {
         if (null == $this->index) {
             throw new \Exception('Please call setType before handle to initialize the index.');
@@ -96,7 +97,7 @@ class RequestHandler
             return $this->index->createIndex();
 
         } elseif('fetchvalues' == $action) {
-            return $this->index->fetchValues($payload);
+            return $this->index->fetchValues($payload, $preferedLanguage);
         }
 
         throw new \Exception('Unknown $action given: '. $action);
@@ -202,4 +203,5 @@ class RequestHandler
 
         throw new \Exception('Unknown type given: '. $type);
     }
+
 }
