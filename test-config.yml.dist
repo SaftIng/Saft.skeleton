@@ -10,27 +10,7 @@ httpConfig: &httpConfig
     username: "dba"
     password: "dba"
 
-arc2Config: &arc2Config
-    username: "saft"
-    password: "saft"
-    host: "localhost"
-    database: "saft"
-    table-prefix: "saft"
-
-queryCacheConfig: &queryCacheConfig
-    cacheConfig:
-        class: "Saft\\Addition\\FileCache\\Cache\\File"
-        cachePath: "/tmp/saft/"
-
 virtuosoConfig: &virtuosoConfig
     dsn: "VOS"
     username: "dba"
     password: "dba"
-
-# Cache related configurations.
-fileCacheConfig: &fileCacheConfig
-    cachePath: "/tmp/saft/"
-
-memcachedCacheConfig: &memcachedCacheConfig
-    host: "127.0.0.1"
-    port: "11211"
