@@ -10,6 +10,7 @@ use Nette\Caching\Storages\MongoDBStorage;
 use Nette\Caching\Storages\RedisStorage;
 use Nette\Caching\Storages\SQLiteStorage;
 use Nette\Caching\Storages\APCStorage;
+use Nette\Caching\Storages\ElasticsearchStorage;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\NamedNodeImpl;
 use Saft\Store\Store;
@@ -178,6 +179,14 @@ class RequestHandler
             // apc/apcu storage
             case 'apc':
                 $this->storage = new APCStorage();
+                break;
+
+            // elastic search storage
+            case 'elasticsearch':
+                $this->storage = new ElasticsearchStorage(
+                    $configuration['host'],
+                    $configuration['port']
+                );
                 break;
 
             default:
