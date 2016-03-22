@@ -21,7 +21,7 @@
         "nette/caching": "2.4.*",
         "nette-caching-ext/caching": "dev-master",
         "ruflin/elastica": "3.*",
-        "saft/saft": "0.1.*",
+        "saft/saft": ">=0.1.1",
         "slim/slim": "3.2.*",
         "zendframework/zend-diactoros": "1.3.*"
     },
