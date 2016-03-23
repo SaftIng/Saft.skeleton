@@ -118,7 +118,8 @@ abstract class AbstractIndex
                 }
                 return ($aRange < $bRange) ? -1 : 1;
             });
-            $this->cache->save($this->graph->getUri() . '.' . $s, $title);
+            //$this->cache->save($this->graph->getUri() . '.' . $s, $title);
+            $this->cache->setItem($this->graph->getUri() . '.' . $s, $title);
         }
 
         return $titles;
@@ -134,7 +135,8 @@ abstract class AbstractIndex
 
         foreach ($uriList as $uri) {
             // load from cache
-            $titleObjs = $this->cache->load($this->graph . '.' . $uri);
+            //$titleObjs = $this->cache->load($this->graph . '.' . $uri);
+            $titleObjs = $this->cache->getItem($this->graph . '.' . $uri);
 
             $titleDefLang = null;
             $title = null;

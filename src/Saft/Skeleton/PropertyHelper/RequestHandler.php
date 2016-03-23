@@ -10,6 +10,7 @@ use Nette\Caching\Storages\MongoDBStorage;
 use Nette\Caching\Storages\RedisStorage;
 use Nette\Caching\Storages\SQLiteStorage;
 use Nette\Caching\Storages\APCStorage;
+use Zend\Cache\StorageFactory;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\NamedNodeImpl;
 use Saft\Store\Store;
@@ -37,6 +38,11 @@ class RequestHandler
     protected $index;
 
     /**
+     * @var Store
+     */
+    protected $store;
+
+    /**
      * @var IStorage
      */
     protected $storage;
@@ -57,7 +63,7 @@ class RequestHandler
     public function getAvailableCacheBackends()
     {
         return array(
-            'file', 'memcached', 'memory', 'mongodb', 'redis', 'sqlite'
+            'file', 'memcached', 'memory', 'mongodb', 'redis'
         );
     }
 
@@ -135,6 +141,21 @@ class RequestHandler
             throw new \Exception('Parameter $configuration does not have key "name" set.');
         }
 
+        switch ($configuration['name']) {
+            case 'apc':
+                $factory = array(
+                    'adapter' => array(
+                        'name' => $configuration['name'],
+                        //'options' => array('ttl' => 3600),
+                ));
+                break;
+            
+            default:
+                throw new \Exception('Unknown name given: '. $configuration['name']);
+        }
+
+        $this->cache = StorageFactory::factory($factory);
+        /*
         switch($configuration['name']) {
             // file storage: stores data in files
             case 'file':
@@ -182,9 +203,10 @@ class RequestHandler
 
             default:
                 throw new \Exception('Unknown name given: '. $configuration['name']);
-        }
+        }        
 
         $this->cache = new Cache($this->storage);
+        */
     }
 
     /**
