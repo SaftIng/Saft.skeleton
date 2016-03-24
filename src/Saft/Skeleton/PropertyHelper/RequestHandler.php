@@ -149,6 +149,34 @@ class RequestHandler
                         //'options' => array('ttl' => 3600),
                 ));
                 break;
+
+            case 'redis':
+                $factory = array(
+                    'adapter' => array(
+                        'name' => $configuration['name'],
+                        'options' => array(
+                            //'server' => 'redis://'.$configuration['host'].':'.$configuration['port']
+                            'server' => array(
+                                'host' => $configuration['host'],
+                                'port' => $configuration['port']
+                            )
+                        ),
+                ));
+                break;
+
+            case 'memcached':
+                $factory = array(
+                    'adapter' => array(
+                        'name' => $configuration['name'],
+                        'options' => array(
+                            //'servers' => $configuration['host'].':'.$configuration['port']
+                            'servers' => array([
+                                'host' => $configuration['host'],
+                                'port' => $configuration['port']
+                            ])
+                        ),
+                ));
+                break;
             
             default:
                 throw new \Exception('Unknown name given: '. $configuration['name']);

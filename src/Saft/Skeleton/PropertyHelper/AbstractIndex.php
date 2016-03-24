@@ -3,6 +3,7 @@
 namespace Saft\Skeleton\PropertyHelper;
 
 use Nette\Caching\Cache;
+use Zend\Cache\StorageFactory;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\Statement;
 use Saft\Store\Store;
@@ -49,7 +50,7 @@ abstract class AbstractIndex
      * @param NamedNode $graph
      * @throws \Exception if preferedProperties contains 0 elements.
      */
-    public function __construct(Cache $cache, Store $store, NamedNode $graph)
+    public function __construct($cache, Store $store, NamedNode $graph)
     {
         $this->cache = $cache;
         $this->graph = $graph;
@@ -119,7 +120,7 @@ abstract class AbstractIndex
                 return ($aRange < $bRange) ? -1 : 1;
             });
             //$this->cache->save($this->graph->getUri() . '.' . $s, $title);
-            $this->cache->setItem($this->graph->getUri() . '.' . $s, $title);
+            $this->cache->setItem($this->graph->getUri() . '.' . $s, serialize($title));
         }
 
         return $titles;
@@ -133,16 +134,31 @@ abstract class AbstractIndex
     {
         $titles = array();
 
+        
+        //$func = function($value) { return $this->graph . '.' . $value; };
+        /*
+        $uriListG = array_map(function($value) { 
+          return $this->graph . '.' . $value; }, 
+          $uriList
+        );
+
+        var_dump($this->cache->getItems($uriListG) );
+        */
+        
+
         foreach ($uriList as $uri) {
             // load from cache
             //$titleObjs = $this->cache->load($this->graph . '.' . $uri);
-            $titleObjs = $this->cache->getItem($this->graph . '.' . $uri);
+            $titleObjs = unserialize($this->cache->getItem($this->graph . '.' . $uri, $success));
+            //var_dump( $titleObjs );
+            
 
             $titleDefLang = null;
             $title = null;
 
             // if there are title information for a given URI
             if (null != $titleObjs) {
+                //$titleObjs['titles'] = unserialize($titleObjs['titles']);
                 foreach ($titleObjs['titles'] as $key => $titleObj) {
                     // language is set for the title
                     if (isset($titleObj['lang'])) {
