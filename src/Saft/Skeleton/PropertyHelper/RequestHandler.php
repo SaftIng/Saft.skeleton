@@ -146,7 +146,9 @@ class RequestHandler
                 $factory = array(
                     'adapter' => array(
                         'name' => $configuration['name'],
-                        //'options' => array('ttl' => 3600),
+                        'options' => array(
+                            //'ttl' => 3600
+                        ),
                 ));
                 break;
 

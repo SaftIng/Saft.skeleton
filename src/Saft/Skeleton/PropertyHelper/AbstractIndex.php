@@ -134,23 +134,60 @@ abstract class AbstractIndex
     {
         $titles = array();
 
-        
-        //$func = function($value) { return $this->graph . '.' . $value; };
-        /*
-        $uriListG = array_map(function($value) { 
-          return $this->graph . '.' . $value; }, 
-          $uriList
+        $graph_uriList = array_map(function($uri) { 
+            return $this->graph . '.' . $uri; }, 
+            $uriList
         );
 
-        var_dump($this->cache->getItems($uriListG) );
-        */
-        
+        //var_dump( $this->cache->getItems($graph_uriList) );
+
+        $graph_items = array_map(function($title) {
+            return unserialize($title); }, 
+            $this->cache->getItems($graph_uriList)
+        );
 
         foreach ($uriList as $uri) {
+            $titleDefLang = null;
+            $title = null;          
+            if ( array_key_exists($this->graph . '.' . $uri, $graph_items) ) {
+                //$result[$uri] = $graph_items[ $this->graph . '.' . $uri ];
+                $titleObjs = $graph_items[ $this->graph . '.' . $uri ];
+
+                foreach ($titleObjs['titles'] as $key => $titleObj) {
+                    // language is set for the title
+                    if (isset($titleObj['lang'])) {
+                        if ($titleObj['lang'] == $preferedLanguage) {
+                            $title = $titleObj['title'];
+                            break;
+                        }
+                        if ($titleDefLang == null
+                            && $preferedLanguage != $this->defaultLanguage
+                            && $titleObj['lang'] == $this->defaultLanguage) {
+                            $titleDefLang = $titleObj['title'];
+                        }
+                    }
+                }
+                // if a title was found
+                if (empty($title)) {
+                    if (false === empty($titleDefLang)) {
+                        $title = $titleDefLang;
+                    } else {
+                        $title = array_shift($titleObjs['titles']);
+                        $title = $title['title'];
+                    }
+                }
+            } 
+
+            $titles[$uri] = $title;
+        }
+        //var_dump( $titles );
+
+        return $titles;
+        
+        /*
+        foreach ($uriList as $uri) {
             // load from cache
-            //$titleObjs = $this->cache->load($this->graph . '.' . $uri);
             $titleObjs = unserialize($this->cache->getItem($this->graph . '.' . $uri, $success));
-            //var_dump( $titleObjs );
             
 
             $titleDefLang = null;
@@ -187,5 +224,6 @@ abstract class AbstractIndex
         }
 
         return $titles;
+        */
     }
 }
