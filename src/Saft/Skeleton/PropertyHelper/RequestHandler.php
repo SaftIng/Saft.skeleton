@@ -2,14 +2,6 @@
 
 namespace Saft\Skeleton\PropertyHelper;
 
-use Nette\Caching\Cache;
-use Nette\Caching\Storages\FileStorage;
-use Nette\Caching\Storages\NewMemcachedStorage;
-use Nette\Caching\Storages\MemoryStorage;
-use Nette\Caching\Storages\MongoDBStorage;
-use Nette\Caching\Storages\RedisStorage;
-use Nette\Caching\Storages\SQLiteStorage;
-use Nette\Caching\Storages\APCStorage;
 use Zend\Cache\StorageFactory;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\NamedNodeImpl;
@@ -41,11 +33,6 @@ class RequestHandler
      * @var Store
      */
     protected $store;
-
-    /**
-     * @var IStorage
-     */
-    protected $storage;
 
     /**
      * @param Store $store
@@ -143,7 +130,7 @@ class RequestHandler
 
         switch ($configuration['name']) {
             case 'apc':
-                $factory = array(
+                $options = array(
                     'adapter' => array(
                         'name' => $configuration['name'],
                         'options' => array(
@@ -154,7 +141,7 @@ class RequestHandler
                 break;
 
             case 'redis':
-                $factory = array(
+                $options = array(
                     'adapter' => array(
                         'name' => $configuration['name'],
                         'options' => array(
@@ -168,7 +155,7 @@ class RequestHandler
                 break;
 
             case 'memcached':
-                $factory = array(
+                $options = array(
                     'adapter' => array(
                         'name' => $configuration['name'],
                         'options' => array(
@@ -185,59 +172,7 @@ class RequestHandler
                 throw new \Exception('Unknown name given: '. $configuration['name']);
         }
 
-        $this->cache = StorageFactory::factory($factory);
-        /*
-        switch($configuration['name']) {
-            // file storage: stores data in files
-            case 'file':
-                $this->storage = new FileStorage($configuration['dir']);
-                break;
-
-            // memcached storage
-            case 'memcached':
-                $this->storage = new NewMemcachedStorage(
-                    $configuration['host'],
-                    $configuration['port']
-                );
-                break;
-
-            // memory storage: lasts as long as the current PHP session is executed.
-            case 'memory':
-                $this->storage = new MemoryStorage();
-                break;
-
-            // mongodb storage
-            case 'mongodb':
-                $this->storage = new MongoDBStorage(
-                    $configuration['host'],
-                    $configuration['port']
-                );
-                break;
-
-            // redis storage
-            case 'redis':
-                $this->storage = new RedisStorage(
-                    $configuration['host'],
-                    $configuration['port']
-                );
-                break;
-
-            // sqlite storage
-            case 'sqlite':
-                $this->storage = new SQLiteStorage($configuration['path']);
-                break;
-
-            // apc/apcu storage
-            case 'apc':
-                $this->storage = new APCStorage();
-                break;
-
-            default:
-                throw new \Exception('Unknown name given: '. $configuration['name']);
-        }        
-
-        $this->cache = new Cache($this->storage);
-        */
+        $this->cache = StorageFactory::factory($options);
     }
 
     /**

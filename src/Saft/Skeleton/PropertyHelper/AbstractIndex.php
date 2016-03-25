@@ -2,8 +2,6 @@
 
 namespace Saft\Skeleton\PropertyHelper;
 
-use Nette\Caching\Cache;
-use Zend\Cache\StorageFactory;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\Statement;
 use Saft\Store\Store;
