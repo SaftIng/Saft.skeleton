@@ -119,8 +119,7 @@ abstract class AbstractIndex
                 }
                 return ($aRange < $bRange) ? -1 : 1;
             });
-            //$this->cache->save($this->graph->getUri() . '.' . $s, $title);
-            $this->cache->setItem($this->graph->getUri() . '.' . $s, serialize($title));
+            $this->cache->setItem($s, serialize($title));
         }
 
         return $titles;
@@ -133,25 +132,19 @@ abstract class AbstractIndex
     public function fetchValues(array $uriList, $preferedLanguage = "")
     {
         $titles = array();
-
-        $graph_uriList = array_map(function($uri) { 
-            return $this->graph . '.' . $uri; }, 
-            $uriList
-        );
-
-        //var_dump( $this->cache->getItems($graph_uriList) );
-
-        $graph_items = array_map(function($title) {
+        
+        // get items from cache
+        $items = array_map(function($title) {
             return unserialize($title); }, 
-            $this->cache->getItems($graph_uriList)
+            $this->cache->getItems($uriList)
         );
 
         foreach ($uriList as $uri) {
             $titleDefLang = null;
-            $title = null;          
-            if ( array_key_exists($this->graph . '.' . $uri, $graph_items) ) {
-                //$result[$uri] = $graph_items[ $this->graph . '.' . $uri ];
-                $titleObjs = $graph_items[ $this->graph . '.' . $uri ];
+            $title = null;
+
+            if ( array_key_exists($uri, $items) ) {
+                $titleObjs = $items[$uri];
 
                 foreach ($titleObjs['titles'] as $key => $titleObj) {
                     // language is set for the title
@@ -180,50 +173,7 @@ abstract class AbstractIndex
 
             $titles[$uri] = $title;
         }
-        //var_dump( $titles );
 
         return $titles;
-        
-        /*
-        foreach ($uriList as $uri) {
-            // load from cache
-            $titleObjs = unserialize($this->cache->getItem($this->graph . '.' . $uri, $success));
-            
-
-            $titleDefLang = null;
-            $title = null;
-
-            // if there are title information for a given URI
-            if (null != $titleObjs) {
-                //$titleObjs['titles'] = unserialize($titleObjs['titles']);
-                foreach ($titleObjs['titles'] as $key => $titleObj) {
-                    // language is set for the title
-                    if (isset($titleObj['lang'])) {
-                        if ($titleObj['lang'] == $preferedLanguage) {
-                            $title = $titleObj['title'];
-                            break;
-                        }
-                        if ($titleDefLang == null
-                            && $preferedLanguage != $this->defaultLanguage
-                            && $titleObj['lang'] == $this->defaultLanguage) {
-                            $titleDefLang = $titleObj['title'];
-                        }
-                    }
-                }
-                // if a title was found
-                if (empty($title)) {
-                    if (false === empty($titleDefLang)) {
-                        $title = $titleDefLang;
-                    } else {
-                        $title = array_shift($titleObjs['titles']);
-                        $title = $title['title'];
-                    }
-                }
-            }
-            $titles[$uri] = $title;
-        }
-
-        return $titles;
-        */
     }
 }

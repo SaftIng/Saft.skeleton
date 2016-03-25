@@ -148,6 +148,7 @@ class RequestHandler
                         'name' => $configuration['name'],
                         'options' => array(
                             //'ttl' => 3600
+                            'namespace' => $this->graph
                         ),
                 ));
                 break;
@@ -157,7 +158,7 @@ class RequestHandler
                     'adapter' => array(
                         'name' => $configuration['name'],
                         'options' => array(
-                            //'server' => 'redis://'.$configuration['host'].':'.$configuration['port']
+                            'namespace' => $this->graph,
                             'server' => array(
                                 'host' => $configuration['host'],
                                 'port' => $configuration['port']
@@ -171,7 +172,7 @@ class RequestHandler
                     'adapter' => array(
                         'name' => $configuration['name'],
                         'options' => array(
-                            //'servers' => $configuration['host'].':'.$configuration['port']
+                            'namespace' => $this->graph,
                             'servers' => array([
                                 'host' => $configuration['host'],
                                 'port' => $configuration['port']
