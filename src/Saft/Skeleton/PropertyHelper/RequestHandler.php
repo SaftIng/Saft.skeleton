@@ -50,7 +50,7 @@ class RequestHandler
     public function getAvailableCacheBackends()
     {
         return array(
-            'file', 'memcached', 'memory', 'mongodb', 'redis'
+            'apc', 'filesystem', 'memcached', 'memory', 'mongodb', 'redis'
         );
     }
 
@@ -103,17 +103,24 @@ class RequestHandler
      *
      * Configuration information (besides name) for each backend:
      *
-     * - file
+     * - filesystem
      *   - dir - Path to the store where the data to be stored.
+     *
+     * - apc - No additional configuration needed.
      *
      * - memcached
      *   - host - Host of the memcached server.
      *   - port - Port of the memcached server.
      *
+     * - mongodb
+     *   - host - Host of the MongoDB server.
+     *
+     * - redis
+     *   - host - Host of the memcached server.
+     *   - port - Port of the memcached server.
+     *
      * - memory - No additional configuration needed.
      *
-     * - sqlite
-     *   - path - Full path to the sqlite file.
      *
      * @param array $configuration
      * @throws \Exception if parameter $configuration is empty
@@ -131,48 +138,62 @@ class RequestHandler
         switch ($configuration['name']) {
             case 'apc':
                 $options = array(
-                    'adapter' => array(
-                        'name' => $configuration['name'],
-                        'options' => array(
-                            //'ttl' => 3600
-                            'namespace' => $this->graph
-                        ),
-                ));
+                    'namespace' => $this->graph
+                );
                 break;
-
-            case 'redis':
+            
+            case 'filesystem':
                 $options = array(
-                    'adapter' => array(
-                        'name' => $configuration['name'],
-                        'options' => array(
-                            'namespace' => $this->graph,
-                            'server' => array(
-                                'host' => $configuration['host'],
-                                'port' => $configuration['port']
-                            )
-                        ),
-                ));
+                    'namespace' => $this->graph,
+                    'cache_dir' => $configuration['dir'],
+                    'key_pattern' => '/.*/'
+                );
                 break;
 
             case 'memcached':
                 $options = array(
-                    'adapter' => array(
-                        'name' => $configuration['name'],
-                        'options' => array(
-                            'namespace' => $this->graph,
-                            'servers' => array([
-                                'host' => $configuration['host'],
-                                'port' => $configuration['port']
-                            ])
-                        ),
+                    'namespace' => $this->graph,
+                    'servers' => array([
+                        'host' => $configuration['host'],
+                        'port' => $configuration['port']
+                    ])
+                );
+                break;
+
+            case 'memory':
+                $options = array(
+                    'namespace' => $this->graph
+                );                
+                break;
+
+            case 'mongodb':
+                $options = array(                    
+                    'namespace' => $this->graph,
+                    'server' => $configuration['host'],
+                    'database' => 'zend',
+                    'collection' => 'cache'
+                );
+                break;
+
+            case 'redis':
+                $options = array(                    
+                    'namespace' => $this->graph,
+                    'server' => array(
+                        'host' => $configuration['host'],
+                        'port' => $configuration['port']
                 ));
                 break;
             
             default:
-                throw new \Exception('Unknown name given: '. $configuration['name']);
+                throw new \Exception('Unknown cache name given: '. $configuration['name']);
         }
 
-        $this->cache = StorageFactory::factory($options);
+        $this->cache = StorageFactory::factory(
+            array(
+                'adapter' => array(
+                    'name' => $configuration['name'],
+                    'options' => $options
+        )));
     }
 
     /**
