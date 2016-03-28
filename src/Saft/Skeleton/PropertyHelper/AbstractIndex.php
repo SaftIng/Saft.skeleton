@@ -130,6 +130,9 @@ abstract class AbstractIndex
     public function fetchValues(array $uriList, $preferedLanguage = "")
     {
         $titles = array();
+
+        if ( empty($uriList) )
+            return $titles;
         
         // get items from cache
         $items = array_map(function($title) {
