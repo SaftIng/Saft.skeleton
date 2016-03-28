@@ -16,7 +16,6 @@ use Saft\Store\BasicTriplePatternStore;
 abstract class AbstractIndexTest extends TestCase
 {
     protected $cache;
-    //protected $storage;
     protected $store;
 
     public function setUp()
