@@ -18,7 +18,7 @@ class RequestHandlerMongoDbCacheTest extends AbstractRequestHandlerTest
         $this->fixture->setupCache(array(
             'name' => 'mongodb',
             'host' => 'localhost',
-            'port' => 27017,
+            //'port' => 27017, // nor port for mongodb possible
         ));
     }
 }
