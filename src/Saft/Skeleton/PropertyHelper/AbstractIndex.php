@@ -2,7 +2,6 @@
 
 namespace Saft\Skeleton\PropertyHelper;
 
-use Nette\Caching\Cache;
 use Saft\Rdf\NamedNode;
 use Saft\Rdf\Statement;
 use Saft\Store\Store;
@@ -49,7 +48,7 @@ abstract class AbstractIndex
      * @param NamedNode $graph
      * @throws \Exception if preferedProperties contains 0 elements.
      */
-    public function __construct(Cache $cache, Store $store, NamedNode $graph)
+    public function __construct($cache, Store $store, NamedNode $graph)
     {
         $this->cache = $cache;
         $this->graph = $graph;
@@ -118,7 +117,7 @@ abstract class AbstractIndex
                 }
                 return ($aRange < $bRange) ? -1 : 1;
             });
-            $this->cache->save($this->graph->getUri() . '.' . $s, $title);
+            $this->cache->setItem($s, serialize($title));
         }
 
         return $titles;
@@ -132,15 +131,22 @@ abstract class AbstractIndex
     {
         $titles = array();
 
-        foreach ($uriList as $uri) {
-            // load from cache
-            $titleObjs = $this->cache->load($this->graph . '.' . $uri);
+        if ( empty($uriList) )
+            return $titles;
+        
+        // get items from cache
+        $items = array_map(function($title) {
+            return unserialize($title); }, 
+            $this->cache->getItems($uriList)
+        );
 
+        foreach ($uriList as $uri) {
             $titleDefLang = null;
             $title = null;
 
-            // if there are title information for a given URI
-            if (null != $titleObjs) {
+            if ( array_key_exists($uri, $items) ) {
+                $titleObjs = $items[$uri];
+
                 foreach ($titleObjs['titles'] as $key => $titleObj) {
                     // language is set for the title
                     if (isset($titleObj['lang'])) {
@@ -164,7 +170,8 @@ abstract class AbstractIndex
                         $title = $title['title'];
                     }
                 }
-            }
+            } 
+
             $titles[$uri] = $title;
         }
 
