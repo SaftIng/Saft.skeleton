@@ -30,7 +30,7 @@ abstract class AbstractIndexTest extends TestCase
                     'options' => array(
                         'namespace' => $this->testGraph->getUri()
                     )
-        )));        
+        )));
 
         // store
         $this->store = new BasicTriplePatternStore(
@@ -101,7 +101,7 @@ abstract class AbstractIndexTest extends TestCase
             array(
                 'titles' => array(array('uri' => 'http://purl.org/dc/terms/title', 'title' => 's1 dcterms title'))
             ),
-            unserialize($this->cache->getItem('http://saft/test/s1'))
+            unserialize($this->cache->getItem(md5('http://saft/test/s1')))
         );
         $this->assertEquals(
             array(
@@ -111,7 +111,7 @@ abstract class AbstractIndexTest extends TestCase
                     array('uri' => 'http://purl.org/dc/terms/title', 'title' => 's2 dcterms title'),
                 )
             ),
-            unserialize($this->cache->getItem('http://saft/test/s2'))
+            unserialize($this->cache->getItem(md5('http://saft/test/s2')))
         );
     }
 
@@ -154,7 +154,7 @@ abstract class AbstractIndexTest extends TestCase
             array(
                 'titles' => array(array('uri' => 'http://purl.org/dc/terms/title', 'title' => 's1 dcterms title'))
             ),
-            unserialize($this->cache->getItem('http://saft/test/s1'))
+            unserialize($this->cache->getItem(md5('http://saft/test/s1')))
         );
         $this->assertEquals(
             array(
@@ -164,7 +164,7 @@ abstract class AbstractIndexTest extends TestCase
                     array('uri' => 'http://www.w3.org/2000/01/rdf-schema#label', 'title' => 's2 rdfs label'),
                 )
             ),
-            unserialize($this->cache->getItem('http://saft/test/s2'))
+            unserialize($this->cache->getItem(md5('http://saft/test/s2')))
         );
     }
 

@@ -117,7 +117,7 @@ abstract class AbstractIndex
                 }
                 return ($aRange < $bRange) ? -1 : 1;
             });
-            $this->cache->setItem($s, serialize($title));
+            $this->cache->setItem(md5($s), serialize($title));
         }
 
         return $titles;
@@ -131,21 +131,26 @@ abstract class AbstractIndex
     {
         $titles = array();
 
-        if ( empty($uriList) )
+        foreach ($uriList as $key => $uri) {
+            $uriToMd5List[md5($uri)] = $uri;
+        }
+
+        if (empty($uriList)) {
             return $titles;
-        
+        }
+
         // get items from cache
-        $items = array_map(function($title) {
-            return unserialize($title); }, 
-            $this->cache->getItems($uriList)
+        $items = array_map(
+            function($title) { return unserialize($title); },
+            $this->cache->getItems(array_keys($uriToMd5List))
         );
 
-        foreach ($uriList as $uri) {
+        foreach ($uriToMd5List as $md5 => $uri) {
             $titleDefLang = null;
             $title = null;
 
-            if ( array_key_exists($uri, $items) ) {
-                $titleObjs = $items[$uri];
+            if ( array_key_exists($md5, $items) ) {
+                $titleObjs = $items[$md5];
 
                 foreach ($titleObjs['titles'] as $key => $titleObj) {
                     // language is set for the title
@@ -170,7 +175,7 @@ abstract class AbstractIndex
                         $title = $title['title'];
                     }
                 }
-            } 
+            }
 
             $titles[$uri] = $title;
         }

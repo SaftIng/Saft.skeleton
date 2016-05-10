@@ -137,14 +137,15 @@ class RequestHandler
 
         switch ($configuration['name']) {
             case 'apc':
-                $options = array(
-                    'namespace' => $this->graph
-                );
+                $options = array();
                 break;
-            
+
+            case 'apcu':
+                $options = array();
+                break;
+
             case 'filesystem':
                 $options = array(
-                    'namespace' => $this->graph,
                     'cache_dir' => $configuration['dir'],
                     'key_pattern' => '/.*/'
                 );
@@ -152,7 +153,6 @@ class RequestHandler
 
             case 'memcached':
                 $options = array(
-                    'namespace' => $this->graph,
                     'servers' => array([
                         'host' => $configuration['host'],
                         'port' => $configuration['port']
@@ -161,14 +161,11 @@ class RequestHandler
                 break;
 
             case 'memory':
-                $options = array(
-                    'namespace' => $this->graph
-                );                
+                $options = array();
                 break;
 
             case 'mongodb':
-                $options = array(                    
-                    'namespace' => $this->graph,
+                $options = array(
                     'server' => $configuration['host'],
                     'database' => 'zend',
                     'collection' => 'cache'
@@ -176,14 +173,13 @@ class RequestHandler
                 break;
 
             case 'redis':
-                $options = array(                    
-                    'namespace' => $this->graph,
+                $options = array(
                     'server' => array(
                         'host' => $configuration['host'],
                         'port' => $configuration['port']
                 ));
                 break;
-            
+
             default:
                 throw new \Exception('Unknown cache name given: '. $configuration['name']);
         }
