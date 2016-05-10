@@ -2,8 +2,7 @@
 
 namespace Saft\Skeleton\Test\Unit\PropertyHelper;
 
-use Nette\Caching\Cache;
-use Nette\Caching\Storages\MemoryStorage;
+use Zend\Cache\StorageFactory;
 use Saft\Rdf\LiteralImpl;
 use Saft\Rdf\NodeFactoryImpl;
 use Saft\Rdf\NamedNodeImpl;
@@ -17,7 +16,6 @@ use Saft\Store\BasicTriplePatternStore;
 abstract class AbstractIndexTest extends TestCase
 {
     protected $cache;
-    protected $storage;
     protected $store;
 
     public function setUp()
@@ -25,8 +23,14 @@ abstract class AbstractIndexTest extends TestCase
         parent::setUp();
 
         // cache environment
-        $this->storage = new MemoryStorage();
-        $this->cache = new Cache($this->storage);
+        $this->cache = StorageFactory::factory(
+            array(
+                'adapter' => array(
+                    'name' => 'memory',
+                    'options' => array(
+                        'namespace' => $this->testGraph->getUri()
+                    )
+        )));        
 
         // store
         $this->store = new BasicTriplePatternStore(
@@ -97,7 +101,7 @@ abstract class AbstractIndexTest extends TestCase
             array(
                 'titles' => array(array('uri' => 'http://purl.org/dc/terms/title', 'title' => 's1 dcterms title'))
             ),
-            $this->cache->load($this->testGraph->getUri() . '.http://saft/test/s1')
+            unserialize($this->cache->getItem('http://saft/test/s1'))
         );
         $this->assertEquals(
             array(
@@ -107,7 +111,7 @@ abstract class AbstractIndexTest extends TestCase
                     array('uri' => 'http://purl.org/dc/terms/title', 'title' => 's2 dcterms title'),
                 )
             ),
-            $this->cache->load($this->testGraph->getUri() . '.http://saft/test/s2')
+            unserialize($this->cache->getItem('http://saft/test/s2'))
         );
     }
 
@@ -150,7 +154,7 @@ abstract class AbstractIndexTest extends TestCase
             array(
                 'titles' => array(array('uri' => 'http://purl.org/dc/terms/title', 'title' => 's1 dcterms title'))
             ),
-            $this->cache->load($this->testGraph->getUri() . '.http://saft/test/s1')
+            unserialize($this->cache->getItem('http://saft/test/s1'))
         );
         $this->assertEquals(
             array(
@@ -160,7 +164,7 @@ abstract class AbstractIndexTest extends TestCase
                     array('uri' => 'http://www.w3.org/2000/01/rdf-schema#label', 'title' => 's2 rdfs label'),
                 )
             ),
-            $this->cache->load($this->testGraph->getUri() . '.http://saft/test/s2')
+            unserialize($this->cache->getItem('http://saft/test/s2'))
         );
     }
 
